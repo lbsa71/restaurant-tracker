@@ -15,6 +15,13 @@
 
 set -uo pipefail
 
+# Load nvm if available (needed for non-interactive shells)
+export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# Ensure common paths
+export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:$PATH"
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LIB_DIR="$(dirname "$SCRIPT_DIR")/lib"
 
