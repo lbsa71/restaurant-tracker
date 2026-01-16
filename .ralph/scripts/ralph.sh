@@ -120,6 +120,7 @@ COMPLETION_MARKER="<promise>DONE</promise>"
 LOG_DIR=".ralph/logs"
 mkdir -p "$LOG_DIR"
 RAW_LOG="$LOG_DIR/claude-raw.log"
+LIVE_LOG="$LOG_DIR/claude-live.log"
 ERROR_LOG="$LOG_DIR/errors.log"
 
 # Colors
@@ -181,9 +182,13 @@ run_spec() {
 When complete: write $COMPLETION_MARKER
 Before DONE: run 'npm run build' and verify it passes."
 
-        output=$(echo "$prompt" | timeout $TIMEOUT claude --dangerously-skip-permissions -p 2>&1) || exit_code=$?
+        # Clear live log and add header
+        echo "=== [$(date +"%Y-%m-%d %H:%M:%S")] $spec_name ===" > "$LIVE_LOG"
 
-        # Log output to file (always)
+        # Run Claude with tee for real-time output to live log
+        output=$(echo "$prompt" | timeout $TIMEOUT claude --dangerously-skip-permissions -p 2>&1 | tee -a "$LIVE_LOG") || exit_code=$?
+
+        # Log output to raw log (always)
         log_claude_output "$spec_name" "$output" "$exit_code"
 
         if is_rate_limited "$output"; then
