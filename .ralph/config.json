@@ -1,0 +1,19 @@
+{
+  "version": "1.0.6",
+  "language": "en",
+  "provider": "ssh",
+  "vm_name": "ralph-sandbox",
+  "region": "eu-west-1",
+  "vm_ip": "",
+  "user": "stefan",
+  "notifications": {
+    "ntfy_enabled": true,
+    "ntfy_topic": "ralph-1768572233183"
+  },
+  "github": {
+    "username": "lbsa71"
+  },
+  "claude": {
+    "auth_method": "subscription"
+  }
+}
